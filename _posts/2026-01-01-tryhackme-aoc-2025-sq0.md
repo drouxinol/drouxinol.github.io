@@ -144,7 +144,7 @@ PORT   STATE SERVICE REASON         VERSION
 
 Navigating to port **80** revealed a web application resembling a **ChatGPT-style chatbot**. The application responded dynamically to user input and appeared to function as an internal assistant.
 
-![image.png](images/image.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq0/image.png)
 
 This web application became the primary attack surface.
 
@@ -431,7 +431,7 @@ Port `80` was open on `SERVER1 (10.200.171.101)`. To access it locally, I create
 ssh -L 8081:10.200.171.101:80 -L 3391:10.200.171.101:3389 -i my_key_DB armando@10.200.171.11
 ```
 
-![image.png](images/image%201.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq0/image%201.png)
 
 From the web interface, I obtained an internal email address:
 
@@ -612,7 +612,7 @@ qw1.lucy.fry
 
 Since **GenericAll** allows full control over the target account, I reset Lucy’s password and logged in as her. While enumerating her home directory, I discovered a **KeePass database (.kdbx)**.
 
-![image.png](images/image%202.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq0/image%202.png)
 
 ### KeePass Cracking
 
@@ -626,7 +626,7 @@ The password was recovered successfully.
 
 The database revealed credentials for the **adm** user. 
 
-![image.png](images/image%203.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq0/image%203.png)
 
 ```python
 adm:[REDACTED]
@@ -654,7 +654,7 @@ THM{REDACTED_ROOT_FLAG}
 
 At this stage, the objective was to retrieve the flags from the **Domain Controller (DC1)**. Using **BloodHound**, I identified a valid attack path from **Server2** to **DC1**, confirming a viable privilege escalation route.
 
-![image-2025-12-28-004030.png](images/image-2025-12-28-004030.png)
+![image-2025-12-28-004030.png](assets/img/posts/tryhackme/aoc-2025/sq0/image-2025-12-28-004030.png)
 
 Since I already had administrative access on **Server2**, this position granted **GenericAll** privileges over the user **THMSetup**, which in turn had **AdminTo** rights on the Domain Controller. This effectively gave me full control over the account, including the ability to reset its password.
 
@@ -677,7 +677,7 @@ With authentication confirmed, I accessed **DC1** via RDP:
 mstsc /v:10.200.171.122
 ```
 
-![image.png](images/image%204.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq0/image%204.png)
 
 Using the updated **THMSetup** credentials, I successfully authenticated to the **Domain Controller**. After establishing a high-privilege session, I retrieved both the `user.txt` and `root.txt` flags, confirming full administrative compromise of the target."
 
@@ -736,7 +736,7 @@ I then successfully authenticated to **RDC1** at `10.200.171.121` using `mstsc`.
 mstsc /v:10.200.171.121
 ```
 
-![image.png](images/image%205.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq0/image%205.png)
 
 I then extracted the available flags:
 
@@ -794,7 +794,7 @@ Using these credentials, I successfully accessed **Server3**:
 mstsc /v:server3.vanchat.loc
 ```
 
-![image.png](images/image%206.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq0/image%206.png)
 
 The flags were retrieved:
 
@@ -850,7 +850,7 @@ EXEC ('xp_cmdshell ''netsh advfirewall set allprofiles state off''') AT [TBFC_LS
 
 With a privileged local account now present on **Server4**, I accessed the system via **RDP** using the newly created credentials. Once logged in, I confirmed administrative access and retrieved both flags
 
-![image.png](images/image%207.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq0/image%207.png)
 
 **Flag #14**
 
@@ -896,7 +896,7 @@ I then requested a certificate impersonating the domain administrator:
 Certipy req -u 'TBFC-SQLSERVER1$' -hashes :4053a62b2cd2c03831ea6615b399d89f -template TBFCWebServer -upn administrator@tbfc.loc
 ```
 
-![image.png](images/image%208.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq0/image%208.png)
 
 The certificate was exchanged for the Administrator NT hash:
 
@@ -904,7 +904,7 @@ The certificate was exchanged for the Administrator NT hash:
 Certipy auth -pfx administrator.pfx
 ```
 
-![image.png](images/image%209.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq0/image%209.png)
 
 ```python
 bc42803c87460f4a2bce81f190209b15
