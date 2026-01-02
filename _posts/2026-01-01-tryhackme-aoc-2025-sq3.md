@@ -1,3 +1,13 @@
+---
+title: "TryHackMe: AoC 2025 – Carrotbane of My Existence"
+date: 2026-01-01
+categories: [TryHackMe]
+tags: [AdventOfCyber, Walkthrough]
+image:
+  path: /assets/img/posts/tryhackme/aoc-2025/sq3.png
+  alt: AoC 2025 SQ1
+---
+
 # Carrotbane of My Existence - SQ3
 
 As part of *Day 17 – CyberChef: Hoperation Save McSkidy*, we are required to obtain an access key in order to unlock Side Quest 3.
