@@ -1,3 +1,13 @@
+---
+title: "TryHackMe: AoC 2025 – Scheme Catcher"
+date: 2026-01-01
+categories: [TryHackMe]
+tags: [AdventOfCyber, Walkthrough]
+image:
+  path: /assets/img/posts/tryhackme/aoc-2025/sq2.png
+  alt: AoC 2025 SQ1
+---
+
 # Scheme Catcher - SQ2
 
 ## Unlocking the Access Key
