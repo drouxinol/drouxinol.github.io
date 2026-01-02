@@ -5,7 +5,7 @@ categories: [TryHackMe]
 tags: [AdventOfCyber, Walkthrough]
 image:
   path: /assets/img/posts/tryhackme/aoc-2025/sq0.png
-  alt: AoC 2025 SQ1
+  alt: AoC 2025 SQ0
 ---
 
 # Hopper’s Origins - SQ0
