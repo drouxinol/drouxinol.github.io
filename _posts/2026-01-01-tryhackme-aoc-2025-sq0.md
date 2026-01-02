@@ -1,3 +1,13 @@
+---
+title: "TryHackMe: AoC 2025 – Hopper's Origins"
+date: 2026-01-01
+categories: [TryHackMe]
+tags: [AdventOfCyber, Walkthrough]
+image:
+  path: /assets/img/posts/tryhackme/aoc-2025/sq0.png
+  alt: AoC 2025 SQ1
+---
+
 # Hopper’s Origins - SQ0
 
 # Initial Access — Hopper’s Origins Unlock
