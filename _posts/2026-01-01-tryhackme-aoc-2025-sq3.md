@@ -565,7 +565,7 @@ hopaitech.thm
 
 At this stage, existing A, NS, and SOA records for internal services (e.g., `ticketing-system`, `url-analyzer`) were visible.
 
-![image.png](images/image.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq3/image.png)
 
 ### Attack Strategy
 
@@ -612,7 +612,7 @@ With this configuration, the attacker effectively became the mail server for the
 
 This is what the final DNS records looked like:
 
-![image.png](images/image%201.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq3/image%201.png)
 
 ### SMTP Listener Setup
 
@@ -784,7 +784,7 @@ Using previously obtained credentials, I authenticated to the internal **ticketi
 
 Initial interaction showed that the AI assistant had **broad visibility across tickets** and appeared to operate without enforcing proper authorization checks.
 
-![image.png](images/image%202.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq3/image%202.png)
 
 ### Initial Probe: Attempted Key Disclosure
 
