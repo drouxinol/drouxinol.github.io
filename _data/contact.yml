@@ -2,10 +2,6 @@
 
 - type: github
   icon: "fab fa-github"
-
-- type: rss
-  icon: "fas fa-rss"
-  noblank: false
   
 # Uncomment and complete the url below to enable more contact options
 #
