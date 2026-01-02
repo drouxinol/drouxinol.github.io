@@ -16,13 +16,13 @@ From **Side Quest #1 – The Great Disappearing Act**, an invitation code was pr
 
 Submitting the code resulted in an **Invalid Code** error. Upon inspecting the page source, I discovered a hardcoded JavaScript reference that pointed to the underlying authentication and decryption logic.
 
-```json
+```bash
 const Fd="https://assets.tryhackme.com/additional/aoc2025/files/hopper-origins.txt"
 ```
 
 Visiting this URL returned an encoded string:
 
-```json
+```bash
 hlRAqw3zFxnrgUw1GZusk+whhQHE0F+g7YjWjoJvpZRSCoDzehjXsEX1wQ6TTlOPyEJ/k+AEiMOxdqywh/86AOmhTaXNyZAvbHUVjfMdTqdzxmLXZJwI5ynI
 ```
 
@@ -30,7 +30,7 @@ Using the browser’s developer tools, I observed that A CORS policy error block
 
 **Decryption Logic Code**
 
-```json
+```javascript
 async function Md(e, t) {
     const r = new TextEncoder().encode(e)
       , l = await crypto.subtle.importKey("raw", r, {
@@ -70,7 +70,7 @@ From this, I identified all required parameters for **AES-GCM decryption**: salt
 
 To bypass this limitation, I executed the site’s own decryption logic directly from the browser console:
 
-```json
+```javascript
 (async () => {
     const encryptedBody = "hlRAqw3zFxnrgUw1GZusk+whhQHE0F+g7YjWjoJvpZRSCoDzehjXsEX1wQ6TTlOPyEJ/k+AEiMOxdqywh/86AOmhTaXNyZAvbHUVjfMdTqdzxmLXZJwI5ynI";
     const password = "THM{There.is.no.EASTmas.without.Hopper}";
@@ -105,13 +105,13 @@ TryHackMe explicitly notes that the IP address **10.200.171.250 should be ignore
 
 A full TCP scan was performed across the target subnet to identify live hosts and exposed services:
 
-```python
+```bash
 nmap -sT -p- -T5 10.200.171.0/24 > nmap.txt
 ```
 
 After reviewing the results, the following in-scope hosts were identified:
 
-```python
+```bash
 Nmap scan report for 10.200.171.10
 PORT   STATE SERVICE
 22/tcp open  ssh
