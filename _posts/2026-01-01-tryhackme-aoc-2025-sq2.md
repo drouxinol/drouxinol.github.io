@@ -28,13 +28,13 @@ A KeePass database (`Passwords.kdbx`) was discovered on the VM.
 
 To begin the attack, the database hash was extracted using `keepass2john`:
 
-```json
+```bash
 ./keepass2john ~/Desktop/Passwords.kdbx > keepass.hash
 ```
 
 This produces a John the Ripper–compatible hash:
 
-```json
+```bash
 Passwords:$keepass$*4*20*ef636ddf*67108864*19*2*695a889e93e7279803646b988243060740965d661f0627256bc4da2bdd88da43*06c64226005acd9a116702b3248ae4191572df0293ee31ab4f2f7ccffebc2c68*03d9a29a67fb4bb500000400021000000031c1f2e6bf714350be5805216afc5aff0304000000010000000420000000695a889e93e7279803646b988243060740965d661f0627256bc4da2bdd88da430710000000958513b5c2c36a02c5e822d6b74ccb420b8b00000000014205000000245555494410000000ef636ddf8c29444b91f7a9a403e30a0c05010000004908000000140000000000000005010000004d08000000000000040000000004010000005004000000020000004201000000532000000006c64226005acd9a116702b3248ae4191572df0293ee31ab4f2f7ccffebc2c6804010000005604000000130000000000040000000d0a0d0a*41b1d7deecfba1baa64171a51f88ecc66e97e20056c6fb245ad13e7ff9b37ff1
 ```
 
@@ -42,7 +42,7 @@ Passwords:$keepass$*4*20*ef636ddf*67108864*19*2*695a889e93e7279803646b9882430607
 
 The extracted hash was cracked using John the Ripper with the `rockyou.txt` wordlist:
 
-```json
+```bash
 ./john --wordlist=/usr/share/wordlists/rockyou.txt keepass.hash
 ```
 
@@ -54,13 +54,13 @@ The password was successfully recovered:
 
 With the password obtained, the database was opened using `keepassxc-cli`:
 
-```json
+```bash
 keepassxc-cli open .Passwords.kdbx
 ```
 
 After entering the password, an interactive KeePass shell was provided:
 
-```json
+```bash
 Enter password to unlock .Passwords.kdbx: 
 Scheme Catcher> 
 ```
@@ -69,20 +69,20 @@ Scheme Catcher>
 
 To identify relevant entries, the database contents were listed:
 
-```json
+```bash
 Scheme Catcher> ls
 Key
 ```
 
 Inspecting the entry revealed an attached image file:
 
-```json
+```bash
 Scheme Catcher> show --show-attachments Key
 ```
 
 Output:
 
-```json
+```bash
 Title: Key
 UserName:
 Password: PROTECTED
@@ -94,7 +94,7 @@ Attachments:
 
 The attachment was exported from the database:
 
-```json
+```bash
 attachment-export Key sq2.png sq2.png
 ```
 
