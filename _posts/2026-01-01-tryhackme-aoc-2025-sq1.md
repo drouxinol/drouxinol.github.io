@@ -260,7 +260,7 @@ This indicated a privilege escalation, as the backend trusted the client-supplie
 
 Using the returned `ticket_id`, the following request was made:
 
-```http
+```
 GET /v1/streams/5b141519-31ae-4b23-8e75-9137f72c4568/manifest.m3u8
 ```
 
