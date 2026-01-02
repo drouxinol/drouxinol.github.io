@@ -86,7 +86,7 @@ Accessing **port 8080** revealed a login interface labeled:
 
 This appears to be a protected administrative or internal security portal requiring authentication.
 
-![image.png](images/image.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image.png)
 
 ### **Port 13400 – Facility Video Portal**
 
@@ -98,7 +98,7 @@ Port **13400** hosted another login page titled:
 
 This suggests access to surveillance footage or internal monitoring systems, likely restricted to staff.
 
-![image.png](images/image%201.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%201.png)
 
 ### Port 8000 – Social Media Application
 
@@ -106,7 +106,7 @@ Port **8000** presented a **Facebook-style social media platform**.
 
 This application turned out to be highly valuable for **Open-Source Intelligence (OSINT)** gathering.
 
-![image.png](images/image%202.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%202.png)
 
 ## OSINT Discovery – Guard Hopkins
 
@@ -168,7 +168,7 @@ The generated wordlist was loaded into **Burp Suite Intruder** and used to perfo
 
 During the attack, responses were analyzed based on **HTTP response length**.
 
-![image.png](images/image%203.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%203.png)
 
 One request returned a distinct response length on one password , indicating a deviation from the standard authentication failure response.
 
@@ -178,19 +178,19 @@ This anomaly strongly suggested a **successful login attempt**.
 
 The identified credentials were manually tested on the **HopSec Access Terminal**, resulting in **successful authentication** and confirmation of valid credentials.
 
-![image.png](images/image%204.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%204.png)
 
 ### Cell / Storage Wing Access
 
 After authentication, access to the **Cell / Storage Wing** was unlocked. This action revealed the **first flag.**
 
-![image.png](images/image%205.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%205.png)
 
 ### Client-Side Access Control Analysis
 
 Accessing the this page we can see that we have access to live feed of multiple cameras except the Psych Ward Exit.
 
-![image.png](images/image%206.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%206.png)
 
 Inspecting the page source revealed client-side logic controlling camera access:
 
@@ -222,11 +222,11 @@ By modifying the cookie value from:
 guard → admin
 ```
 
-![image.png](images/image%207.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%207.png)
 
 Refreshing the page, access to the previously restricted **Psych Ward Exit camera** was granted.
 
-![image.png](images/image%208.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%208.png)
 
 ## Capturing the Psych Ward Exit key code
 
@@ -298,13 +298,13 @@ Connection: close
 
 Within the playlist, standard media segment paths (`.ts` files) were exposed. Downloading the first segment revealed the key code to unlock the Psych Ward Exit:
 
-![image.png](images/image%209.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%209.png)
 
 ```json
 Code: 115879
 ```
 
-![image.png](images/image%2010.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%2010.png)
 
 Along with a note indicating that this was only **part of the second flag**.
 
@@ -515,7 +515,7 @@ nc 127.0.0.1 9001
 
 The service presented itself as a **SCADA Gate Control System** and requested an **authorization token**.
 
-![image.png](images/image%2011.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%2011.png)
 
 ### SCADA Authentication
 
@@ -530,7 +530,7 @@ THM{REDACTED}
 
 Access to the SCADA terminal was granted.
 
-![image.png](images/image%2012.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%2012.png)
 
 ### Interacting with the SCADA Terminal
 
@@ -627,7 +627,7 @@ Relevant code snippet:
 UNLOCK_CODE = "739184627" 
 ```
 
-![image.png](images/image%2013.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%2013.png)
 
 This confirmed that **reading the file in `/root` was not required** to unlock the gate. Instead, the application simply checked whether the provided numeric input matched the hardcoded value.
 
@@ -641,19 +641,19 @@ unlock 739184627
 
 The system verified the code and changed the gate state from `LOCKED` to `UNLOCKED`, completing the challenge and triggering the success message.
 
-![image.png](images/image%2014.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%2014.png)
 
 ### Inserting the Code and Exiting the Asylum
 
 After obtaining the numeric authorization code, it was submitted through the SCADA terminal to unlock the main gate. The system validated the code and returned the following flag:
 
-![image.png](images/image%2015.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%2015.png)
 
 Upon successful authentication, a new interface was displayed, representing the final exit door. This door required **all three flags** collected throughout the challenge.
 
 After entering the three flags, the system confirmed that the challenge had been successfully completed and revealed a final message along with a link:
 
-![image.png](images/image%2016.png)
+![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%2016.png)
 
 ```json
 https://static-labs.tryhackme.cloud/apps/hoppers-invitation/
