@@ -1,8 +1,8 @@
 ---
 title: "TryHackMe: AoC 2025 – BreachBlocker Unlocker"
 date: 2026-01-01
-categories: [Walkthrough]
-tags: [AdventOfCyber, Walkthrough, TryHackMe]
+categories: [Writeups]
+tags: [AdventOfCyber, Writeups, TryHackMe]
 image:
   path: /assets/img/posts/tryhackme/aoc-2025/sq4.png
   alt: AoC 2025 SQ1
