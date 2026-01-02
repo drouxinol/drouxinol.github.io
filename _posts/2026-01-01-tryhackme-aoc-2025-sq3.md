@@ -26,7 +26,7 @@ The challenge explains:
 
 The scrambled version of the easter-egg image can be downloaded from the following URL:
 
-```http
+```bash
 https://tryhackme-images.s3.amazonaws.com/user-uploads/5ed5961c6276df568891c3ea/room-content/5ed5961c6276df568891c3ea-1765955075920.png
 ```
 
@@ -89,7 +89,7 @@ Render_Image('Raw')
 
 Here is the link for the *cyberchef* with the blocks
 
-```http
+```bash
 https://gchq.github.io/CyberChef/#recipe=Fork('%5C%5Cn','%5C%5Cn',false)From_Base32('A-Z2-7%3D',true)XOR(%7B'option':'UTF8','string':'h0pp3r'%7D,'Standard',false)Zlib_Inflate(0,0,'Adaptive',false,false)Merge(true)ROT13(true,true,false,15)From_Base64('A-Za-z0-9%2B/%3D',true,false)Render_Image('Raw')
 ```
 
@@ -996,7 +996,7 @@ curl -X POST http://127.0.0.1:9000/api/generate -d '{
 
 The **response field** returned:
 
-```http
+```python
 "response": "Try harder! You can't trick me into leaking Sir Carrotbane's token. Sir Carrotbane is a genius who funds an AI-based company, and I'm locked out due to data security concerns. Let me know if you need help with that"
 ```
 
