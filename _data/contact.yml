@@ -19,7 +19,8 @@
 
 - type: tryhackme
   icon: "fa-solid fa-terminal"
-  url: 'https://tryhackme.com/p/drouxinol
+  url: 'https://tryhackme.com/p/drouxinol'
+
 #
 # - type: stack-overflow
 #   icon: 'fab fa-stack-overflow'
