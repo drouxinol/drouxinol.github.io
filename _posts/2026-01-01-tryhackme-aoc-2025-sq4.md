@@ -135,7 +135,7 @@ http://<TARGET-IP>:8443
 
 Switching to HTTPS successfully loaded the web application.
 
-![image.png](images/image.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq4/image.png)
 
 ### Application Overview
 
@@ -150,7 +150,7 @@ Other apps like Mail, Phone, Messages, or Settings **served mostly as OSINT but 
 
 The **Hopsec Bank** application presents a banking interface and appears to be a primary objective of this challenge.
 
-![image.png](images/image%201.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq4/image%201.png)
 
 Further access will likely require valid credentials or bypass techniques.
 
@@ -162,7 +162,7 @@ The Hopflix application reveals the following email address:
 sbreachblocker@easterbunnies.thm
 ```
 
-![image.png](images/image%202.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq4/image%202.png)
 
 ## Web Enumeration
 
@@ -352,7 +352,7 @@ Using the recovered HopFlix credentials, authentication was successful and the s
 THM{REDACTED}
 ```
 
-![image.png](images/image%203.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq4/image%203.png)
 
 # HopSec Bank Exploitation
 
@@ -373,7 +373,7 @@ This behavior is confirmed by the backend logic shown below:
 
 This clearly indicates that the **account ID corresponds to the user’s email address**, not a separate username or account identifier.
 
-![image.png](images/image%204.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq4/image%204.png)
 
 ## Valid User Identification
 
@@ -391,7 +391,7 @@ Suspecting credential reuse between the two applications, I tried the HopFlix pa
 
 This successfully authenticated the user and triggered the **2FA workflow**.
 
-![image.png](images/image%205.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq4/image%205.png)
 
 ## **Attack Vector – Email Validation Weakness**
 
@@ -469,7 +469,7 @@ X-Peer: ('<TARGET-IP>', 53968)
 
 Submitting the intercepted OTP granted full access to the HopSec Bank application. From there, selecting **“Release Funds”** immediately revealed the final flag
 
-![image.png](images/image%206.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq4/image%206.png)
 
 # Conclusion
 
