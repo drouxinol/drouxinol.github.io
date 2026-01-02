@@ -24,7 +24,7 @@ This challenge is unlocked by finding the Side Quest key in Advent of Cyber Day
 
 A KeePass database (`Passwords.kdbx`) was discovered on the VM. 
 
-![image.png](images/image.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq2/image.png)
 
 To begin the attack, the database hash was extracted using `keepass2john`:
 
@@ -48,7 +48,7 @@ The extracted hash was cracked using John the Ripper with the `rockyou.txt` word
 
 The password was successfully recovered:
 
-![image.png](images/image%201.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq2/image%201.png)
 
 ### Accessing the KeePass Database
 
@@ -159,7 +159,7 @@ gobuster dir -u http://10.64.176.91 -w /usr/share/wordlists/dirbuster/directory-
 
 Inside `/dev`, a ZIP archive was discovered.
 
-![image.png](images/image%202.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq2/image%202.png)
 
 ## Beacon Binary Analysis
 
@@ -185,7 +185,7 @@ Further testing revealed the binary required a key:
 
 Running the binary showed it attempted to connect to a local service on port **4444**.
 
-![image.png](images/images/image%203.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq2/images/image%203.png)
 
 Connecting manually:
 
@@ -199,7 +199,7 @@ Upon execution, the beacon initiated an **HTTP request** to the following endpoi
 /7ln6Z1X9EF
 ```
 
-![image.png](images/image%204.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq2/image%204.png)
 
 This confirmed that the binary was acting as a simple HTTP client, requesting a specific resource.
 
@@ -210,7 +210,7 @@ Manually navigating to the requested endpoint revealed additional content:
 - A new ZIP archive
 - The second challenge flag
 
-![image.png](images/image%205.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq2/image%205.png)
 
 **Flag #2**
 
