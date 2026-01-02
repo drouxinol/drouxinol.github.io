@@ -1,8 +1,8 @@
 ---
 title: "TryHackMe: AoC 2025 – Carrotbane of My Existence"
 date: 2026-01-01
-categories: [TryHackMe]
-tags: [AdventOfCyber, Walkthrough]
+categories: [Walkthrough]
+tags: [AdventOfCyber, Walkthrough, TryHackMe]
 image:
   path: /assets/img/posts/tryhackme/aoc-2025/sq3.png
   alt: AoC 2025 SQ1
