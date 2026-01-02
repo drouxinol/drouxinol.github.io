@@ -185,7 +185,7 @@ Further testing revealed the binary required a key:
 
 Running the binary showed it attempted to connect to a local service on port **4444**.
 
-![image.png](assets/img/posts/tryhackme/aoc-2025/sq2/images/image%203.png)
+![image.png](assets/img/posts/tryhackme/aoc-2025/sq2/image%203.png)
 
 Connecting manually:
 
