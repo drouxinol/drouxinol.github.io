@@ -81,7 +81,7 @@ Given the number of HTTP services, each web port was manually reviewed.
 Accessing **port 8080** revealed a login interface labeled:
 
 ```
-**“HopSec Security Console”**
+HopSec Security Console
 ```
 
 This appears to be a protected administrative or internal security portal requiring authentication.
@@ -93,7 +93,7 @@ This appears to be a protected administrative or internal security portal requir
 Port **13400** hosted another login page titled:
 
 ```
-**“HopSec Asylum – Facility Video Portal”**
+HopSec Asylum – Facility Video Portal
 ```
 
 This suggests access to surveillance footage or internal monitoring systems, likely restricted to staff.
@@ -311,7 +311,7 @@ Along with a note indicating that this was only **part of the second flag**.
 **Note:**
 
 ```
-*“This is only the first part of your second flag. You will need to complete it elsewhere.”*
+This is only the first part of your second flag. You will need to complete it elsewhere.
 ```
 
 ### Discovering Diagnostic Endpoints
