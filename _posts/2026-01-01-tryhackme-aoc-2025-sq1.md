@@ -1,3 +1,13 @@
+---
+title: "TryHackMe: AoC 2025 – The Great Disappearing Act"
+date: 2026-01-01
+categories: [TryHackMe]
+tags: [AdventOfCyber, Walkthrough]
+image:
+  path: /assets/img/posts/tryhackme/aoc-2025/sq1.png
+  alt: AoC 2025 SQ1
+---
+
 # The Great Disappearing Act - SQ1
 
 ## Opening the Target Ports
