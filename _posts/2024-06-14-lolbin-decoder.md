@@ -49,7 +49,7 @@ The objective of this project was to create a centralized platform capable of di
 
 ---
 
-## 🏗 Architecture & Design
+## 🏗  Architecture & Design
 
 The application follows a modular and maintainable Flask architecture, including:
 
@@ -88,9 +88,9 @@ Vulnerability testing was performed on both the web application and the server i
 
 ## 📂 Source Code & Documentation
 
-👉 https://github.com/drouxinol/LOLBIN_Decoder
+👉 [LOLBIN_Decoder – GitHub Repository](https://github.com/drouxinol/LOLBIN_Decoder)
 
-The repository includes a comprehensive technical report detailing the system design, implementation, and security considerations.
+The repository includes the complete source code along with a comprehensive technical report detailing the system architecture, implementation choices, and security considerations.
 
 ---
 
