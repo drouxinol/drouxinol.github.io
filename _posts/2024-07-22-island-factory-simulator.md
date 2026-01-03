@@ -88,8 +88,7 @@ This loop continues until an end condition is reached.
 
 ## 📂 Source Code
 
-👉 **GitHub Repository:**  
-https://github.com/drouxinol/IslandFactorySimulator
+👉 [Island Factory Simulator – GitHub Repository](https://github.com/drouxinol/IslandFactorySimulator)
 
 ---
 
