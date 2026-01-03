@@ -4,13 +4,15 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-This website is a personal space where I document my learning and practical experience in cybersecurity. It is primarily focused on **hands-on walkthroughs, investigations, and security-related writeups** derived from labs, simulations, and real-world inspired scenarios.
+This website is a personal space where I document hands-on work in cybersecurity and security engineering, combining practical analysis, tooling, and structured documentation.
 
-The content published here reflects my approach to understanding security events through hands-on practice. It is primarily based on walkthroughs of practical labs and simulated scenarios, such as those found on platforms like TryHackMe, where alerts, behaviors, and attack patterns are broken down and analyzed step by step.
+The content focuses primarily on walkthroughs, investigations, and security-related writeups derived from labs, simulations, and real-world–inspired scenarios. These include platforms such as TryHackMe, where alerts, behaviors, and attack techniques are analyzed step by step from a defensive perspective.
 
-Rather than focusing on high-level theory, the goal is to emphasize **practical analysis and reasoning**, documenting the investigative process, observations, and conclusions behind each walkthrough in a clear and structured way.
+Rather than emphasizing high-level theory, this site prioritizes practical reasoning and investigation workflows. Each writeup documents the analytical process behind a security event — from initial observation and hypothesis to validation and conclusion — with the goal of building repeatable methodologies applicable to real environments.
 
-This site also serves as a long-term knowledge base. Writing and documenting each process helps reinforce concepts, track progress over time, and build a consistent methodology for approaching security problems.
+In addition to writeups, this site also highlights software projects and internal tools developed to support security analysis and automation. These projects reflect my interest in bridging cybersecurity and engineering by transforming analytical needs into practical, usable solutions.
 
-All content is created for learning and educational purposes, with an emphasis on clarity, reproducibility, and continuous improvement.
+This website also serves as a long-term personal knowledge base. Writing and documenting each process reinforces core concepts, tracks technical growth over time, and helps refine a consistent approach to solving security problems.
+
+All content is created for educational and professional development purposes, with an emphasis on clarity, reproducibility, ethical responsibility, and continuous improvement.
 
