@@ -8,8 +8,6 @@ image:
   alt: AoC 2025 SQ0
 ---
 
-# Hopper’s Origins - SQ0
-
 # Initial Access — Hopper’s Origins Unlock
 
 From **Side Quest #1 – The Great Disappearing Act**, an invitation code was provided together with a link. 
