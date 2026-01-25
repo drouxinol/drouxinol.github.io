@@ -8,8 +8,6 @@ image:
   alt: AoC 2025 SQ1
 ---
 
-# BreachBlocker Unlocker - SQ4
-
 # Overview
 
 This challenge involved analyzing a **malicious HTA file**, reversing a **multi‑stage obfuscation chain**, and using the recovered access key to unlock additional services.
