@@ -2,6 +2,8 @@
 title: "TryHackMe – Daily Bugle Walkthrough"
 categories: [Writeups]
 tags: [TryHackMe, Joomla, SQLi, Cracking, Yum, Privilege Escalation]
+image:
+  path: assets/img/posts/tryhackme/daily_bugle/5a1494ff275a366be8418a9bf831847c.png
 ---
 
 ![image.png](assets/img/posts/tryhackme/daily_bugle/image.png)
