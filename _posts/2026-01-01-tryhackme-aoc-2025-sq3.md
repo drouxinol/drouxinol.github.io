@@ -8,8 +8,6 @@ image:
   alt: AoC 2025 SQ1
 ---
 
-# Carrotbane of My Existence - SQ3
-
 As part of *Day 17 – CyberChef: Hoperation Save McSkidy*, we are required to obtain an access key in order to unlock Side Quest 3.
 
 The challenge provides the following hint:
