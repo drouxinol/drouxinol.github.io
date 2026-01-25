@@ -8,8 +8,6 @@ image:
   alt: AoC 2025 SQ1
 ---
 
-# The Great Disappearing Act - SQ1
-
 ## Opening the Target Ports
 
 From **Day 1 of Advent of Cyber 2025**, we obtained a key required to unlock the target system’s exposed services.
