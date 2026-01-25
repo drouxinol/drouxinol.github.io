@@ -8,8 +8,6 @@ image:
   alt: AoC 2025 SQ1
 ---
 
-# Scheme Catcher - SQ2
-
 ## Unlocking the Access Key
 
 This challenge is unlocked by finding the Side Quest key in Advent of Cyber Day 9.
