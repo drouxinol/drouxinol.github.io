@@ -133,7 +133,7 @@ Password: spiderman123
 
 Using the cracked credentials, we successfully log into the Joomla administrator panel:
 
-```http
+```
 http://10.64.149.242/administrator
 ```
 
@@ -161,7 +161,7 @@ nc -lnvp 4444
 
 Triggered the shell by visiting:
 
-```http
+```
 http://10.64.176.202/templates/beez3/index.php
 ```
 
@@ -267,7 +267,7 @@ With that i was able to get a root shell
 
 Captured the root flag:
 
-```json
+```bash
 cat root.txt 
 ee..........f79
 ```
