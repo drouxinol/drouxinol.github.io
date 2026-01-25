@@ -2,6 +2,8 @@
 title: "TryHackMe - U.A. High School Walkthrough"
 categories: [Writeups]
 tags: [Cybersecurity, Penetration Testing, Steganography, Privilege Escalation, Linux]
+image:
+  path: assets/img/posts/tryhackme/ua-high-school/11c2b861cb1add6468a32d0be7b26b44.png
 ---
 
 ![image.png](assets/img/posts/tryhackme/ua-high-school/image.png)
