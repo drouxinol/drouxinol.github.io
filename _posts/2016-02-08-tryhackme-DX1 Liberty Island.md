@@ -5,7 +5,6 @@ categories: [Writeups]
 tags: [Writeups, TryHackMe]
 image:
   path: assets/img/posts/tryhackme/dx1-liberty-island/logo.png
-  alt: DX1: Liberty Island
 ---
 
 
