@@ -1,6 +1,12 @@
-# TryHackMe - The London Bridge Walkthrough
+---
+title: "TryHackMe: The London Bridge Walkthrough"
+categories: [Writeups]
+tags: [Writeups, TryHackMe]
+image:
+  path: assets/img/posts/tryhackme/the-london-bridge/618b3fa52f0acc0061fb0172-1718657342624.png
+---
 
-![image.png](image.png)
+![image.png](assets/img/posts/tryhackme/the-london-bridge/image.png)
 
 ## Introduction
 
@@ -32,7 +38,7 @@ The attack surface is primarily the web service running on port **8080**.
 
 Accessing `http://10.67.142.188:8080` reveals a simple website with multiple tabs.
 
-![image.png](image%201.png)
+![image.png](assets/img/posts/tryhackme/the-london-bridge/image%201.png)
 
 **Notable Pages**
 
@@ -43,15 +49,15 @@ Static tabs (`Home` and others ) do not have functionality.
 
 The `Gallery` page allows image uploads
 
-![image.png](image%202.png)
+![image.png](assets/img/posts/tryhackme/the-london-bridge/image%202.png)
 
 Analyzing the web page source code we can see that the photos are located in the `upload` dir 
 
-![image.png](image%203.png)
+![image.png](assets/img/posts/tryhackme/the-london-bridge/image%203.png)
 
 We also have a note to the dev team to make sure that people can also add images using links
 
-![image.png](image%204.png)
+![image.png](assets/img/posts/tryhackme/the-london-bridge/image%204.png)
 
 Attempts to upload a web shell failed due to strict image validation:
 
@@ -84,7 +90,7 @@ The `/dejaview` endpoint stands out.
 
 The `/dejaview` page allows users to submit a URL that is rendered via an `<img>` tag.
 
-![image.png](image%205.png)
+![image.png](assets/img/posts/tryhackme/the-london-bridge/image%205.png)
 
 Initial testing confirmed the use of the parameter:
 
@@ -92,7 +98,7 @@ Initial testing confirmed the use of the parameter:
 image_url=<URL>
 ```
 
-![image.png](image%206.png)
+![image.png](assets/img/posts/tryhackme/the-london-bridge/image%206.png)
 
 However, this only reflected content and did not allow directory listing or file access.
 
@@ -117,7 +123,7 @@ ffuf -u 'http://10.67.142.188:8080/view_image' -w /usr/share/seclists/Discovery/
 
 A hidden parameter named `www` was discovered.
 
-![image.png](image%207.png)
+![image.png](assets/img/posts/tryhackme/the-london-bridge/image%207.png)
 
 I found that `www` was a parameter that was accepted 
 
@@ -129,7 +135,7 @@ To verify SSRF behavior, a request to the localhost interface was attempted usin
 www=http://127.0.0.1/
 ```
 
-![image.png](image%208.png)
+![image.png](assets/img/posts/tryhackme/the-london-bridge/image%208.png)
 
 This resulted in a **permission denied** response, indicating that direct access to `127.0.0.1` was likely filtered by the application
 
@@ -143,7 +149,7 @@ www=http://127.1/
 
 This request returned a **valid response**, confirming that the application did not properly normalize or validate loopback IP addresses. 
 
-![image.png](image%209.png)
+![image.png](assets/img/posts/tryhackme/the-london-bridge/image%209.png)
 
 ### Internal Directory Fuzzing
 
@@ -155,13 +161,13 @@ ffuf -u 'http://10.67.142.188:8080/view_image' -w /usr/share/seclists/Discovery/
 
 This revealed sensitive directories, including `/.ssh`
 
-![image.png](image%2010.png)
+![image.png](assets/img/posts/tryhackme/the-london-bridge/image%2010.png)
 
 ### SSH Key Disclosure
 
 Checking `http://127.1/.ssh`, we see that indexing is enabled and there are two files.
 
-![image.png](image%2011.png)
+![image.png](assets/img/posts/tryhackme/the-london-bridge/image%2011.png)
 
 Reading `http://127.1/.ssh/id_rsa`, we obtain a private key.
 
@@ -225,7 +231,7 @@ Basic enumeration revealed the presence of another local user, `charles`, though
 
 Local enumeration was performed using **LinPEAS**, which identified a privilege escalation vector related to **CVE-2018-18955** involving misconfigured subordinate UID mappings (`subuid_shell`).
 
-![image.png](image%2012.png)
+![image.png](assets/img/posts/tryhackme/the-london-bridge/image%2012.png)
 
 [https://github.com/scheatkode/CVE-2018-18955](https://github.com/scheatkode/CVE-2018-18955)
 
