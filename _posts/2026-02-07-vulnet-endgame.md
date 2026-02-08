@@ -6,8 +6,6 @@ image:
   path: assets/img/posts/tryhackme/vulnnet-endgame/5ec42470043801a381211912be05cfa6.png
 ---
 
-![image.png](assets/img/posts/tryhackme/vulnnet-endgame/image.png)
-
 ## Introduction
 
 This room simulates a vulnerable infrastructure designed to test real‑world enumeration and exploitation skills. There are no puzzles or guesswork involved — **thorough enumeration is the key to success**.
