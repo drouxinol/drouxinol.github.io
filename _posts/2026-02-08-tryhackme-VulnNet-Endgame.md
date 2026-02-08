@@ -1,4 +1,10 @@
-# TryHackme - VulnNet: Endgame Walkthrough
+---
+title: "TryHackMe: VulnNet Endgame Walkthrough"
+categories: [Writeups]
+tags: [Writeups, TryHackMe]
+image:
+  path: assets/img/posts/tryhackme/vulnnet-endgame/logo.png
+---
 
 ![image.png](image.png)
 
