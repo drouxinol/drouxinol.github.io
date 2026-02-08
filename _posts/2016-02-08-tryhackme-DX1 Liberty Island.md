@@ -1,6 +1,5 @@
 ---
 title: "TryHackMe: DX1: Liberty Island Walkthrough"
-date: 2026-02-08
 categories: [Writeups]
 tags: [Writeups, TryHackMe]
 image:
