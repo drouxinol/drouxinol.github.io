@@ -1,6 +1,15 @@
+---
+title: "TryHackMe: DX1: Liberty Island"
+date: 2026-02-08
+categories: [Writeups]
+tags: [Writeups, TryHackMe]
+image:
+  path: assets/img/posts/tryhackme/dx1-liberty-island/logo.png
+  alt: DX1: Liberty Island
+---
 # TryHackMe - DX1: Liberty Island Walkthrough
 
-![image.png](image.png)
+![image.png](assets/img/posts/tryhackme/dx1-liberty-island/image.png)
 
 ## Introduction
 
@@ -56,11 +65,11 @@ The presence of a VNC service and a Golang-based HTTP service stood out as poten
 
 Navigating to the web service on port 80 revealed a simple static webpage.
 
-![image.png](image%201.png)
+![image.png](assets/img/posts/tryhackme/dx1-liberty-island/image%201.png)
 
 The page did not contain any user input fields or interactive elements. However, it displayed a list of usernames labeled as **“bad actors.”** While this initially appeared informational, these usernames would later become relevant during exploitation.
 
-![image.png](image%202.png)
+![image.png](assets/img/posts/tryhackme/dx1-liberty-island/image%202.png)
 
 ### Directory Enumeration
 
@@ -90,7 +99,7 @@ Disallow: *
 
 Accessing the `/datacubes` directory resulted in a redirect to a numeric endpoint `/0000`, which displayed a block of text.
 
-![image.png](image%203.png)
+![image.png](assets/img/posts/tryhackme/dx1-liberty-island/image%203.png)
 
 Given the numeric naming convention, fuzzing was performed to enumerate additional datacubes.
 
@@ -193,7 +202,7 @@ Desktop name "ip-10-66-181-173.ec2.internal:1 (ajacobson)"
 
 Once connected, an interactive desktop session was available.
 
-![image.png](image%204.png)
+![image.png](assets/img/posts/tryhackme/dx1-liberty-island/image%204.png)
 
 Within the VNC desktop environment, a message file was located containing an internal email exchange between UNATCO personnel. This message included updated credentials following a reported security incident.
 
@@ -224,7 +233,7 @@ You should probably delete this as soon as you're done reading, okay?
 
 Further exploration of the VNC environment revealed a script named `badactors-list`. Observing its execution showed that it attempted to communicate with **UNATCO on port 23023**, which had previously been identified during service enumeration as a Golang-based HTTP service.
 
-![image.png](image%205.png)
+![image.png](assets/img/posts/tryhackme/dx1-liberty-island/image%205.png)
 
 <aside>
 ⚠️
