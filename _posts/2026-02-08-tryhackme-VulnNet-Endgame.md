@@ -6,7 +6,7 @@ image:
   path: assets/img/posts/tryhackme/vulnnet-endgame/logo.png
 ---
 
-![image.png](image.png)
+![image.png](assets/img/posts/tryhackme/vulnnet-endgame/image.png)
 
 ## Introduction
 
@@ -38,7 +38,7 @@ PORT   STATE SERVICE REASON
 
 Navigating to `http://10.64.153.77` reveals a simple web page:
 
-![image.png](image%201.png)
+![image.png](assets/img/posts/tryhackme/vulnnet-endgame/image%201.png)
 
 No immediately interesting functionality or input vectors were identified on the landing page.
 
@@ -112,7 +112,7 @@ $ gobuster dir -u http://shop.vulnnet.thm -w /usr/share/wordlists/dirb/common.tx
 
 ### fundraising_2007.vulnnet.thm
 
-![image.png](image%202.png)
+![image.png](assets/img/posts/tryhackme/vulnnet-endgame/image%202.png)
 
 ### **admin1.vulnnet.thm**
 
@@ -137,7 +137,7 @@ This particular subdomain stands out as the most promising target for further ex
 
 By navigating the identified directory structure, I successfully located the **TYPO3 administrative login interface.**
 
-![image.png](image%203.png)
+![image.png](assets/img/posts/tryhackme/vulnnet-endgame/image%203.png)
 
 Default credentials of admin:admin, admin:password, admin:administrator did not work.
 
@@ -157,7 +157,7 @@ $ gobuster dir -u http://blog.vulnnet.thm -w /usr/share/wordlists/dirb/common.tx
 
 Analyzing the source code of the posts I was able to get another endpoint
 
-![image.png](image%204.png)
+![image.png](assets/img/posts/tryhackme/vulnnet-endgame/image%204.png)
 
 ```bash
 http://api.vulnnet.thm/vn_internals/api/v2/fetch/?blog=2
@@ -165,7 +165,7 @@ http://api.vulnnet.thm/vn_internals/api/v2/fetch/?blog=2
 
 After initial testing for **Local File Inclusion (LFI)** and **Insecure Direct Object References (IDOR)** yielded no results, I shifted focus toward the data-handling logic of the application. Recognizing that the `?blog=` parameter is possibly used to fetch dynamic content from a database, I performed a targeted vulnerability scan using **sqlmap**.
 
-![image.png](image%205.png)
+![image.png](assets/img/posts/tryhackme/vulnnet-endgame/image%205.png)
 
 The analysis confirmed that the GET parameter is injectable!
 
@@ -196,7 +196,7 @@ $ sqlmap -u "http://api.vulnnet.thm/vn_internals/api/v2/fetch/?blog=1" -D vn_adm
 
 This produced several usernames and password hashes, including the user `chris_w` .
 
-![image.png](image%206.png)
+![image.png](assets/img/posts/tryhackme/vulnnet-endgame/image%206.png)
 
 The password hash used **Argon2**, making brute-forcing with a large wordlist (e.g., `rockyou.txt`) computationally expensive.
 
@@ -208,7 +208,7 @@ sqlmap -u "http://api.vulnnet.thm/vn_internals/api/v2/fetch/?blog=1" -D blog -T 
 
 This yielded multiple plaintext passwords associated with blog users. These were repurposed as a targeted wordlist for cracking the TYPO3 admin hash.
 
-![image.png](image%207.png)
+![image.png](assets/img/posts/tryhackme/vulnnet-endgame/image%207.png)
 
 The extracted Argon2 hash for `chris_w` was saved and I used the blog passwords as a custom wordlist:
 
@@ -219,13 +219,13 @@ $ john --format=argon2 --wordlist=/home/drouxinol/.local/share/sqlmap/output/api
 
 The password was successfully cracked:
 
-![image.png](image%208.png)
+![image.png](assets/img/posts/tryhackme/vulnnet-endgame/image%208.png)
 
 ### TYPO3 CMS Access
 
 These credentials provided access to the TYPO3 administrative interface
 
-![image.png](image%209.png)
+![image.png](assets/img/posts/tryhackme/vulnnet-endgame/image%209.png)
 
 Since TYPO3 is a PHP-based CMS, gaining backend access often enables file upload or configuration manipulation, making it a strong candidate for remote code execution.
 
@@ -233,15 +233,15 @@ Since TYPO3 is a PHP-based CMS, gaining backend access often enables file upload
 
 Within the TYPO3 admin panel, the **Filelist** module was used to attempt a PHP shell upload.
 
-![image.png](image%2010.png)
+![image.png](assets/img/posts/tryhackme/vulnnet-endgame/image%2010.png)
 
 Initially, PHP uploads were blocked due to a restrictive configuration (`FileDenyPattern`).
 
-![image.png](image%2011.png)
+![image.png](assets/img/posts/tryhackme/vulnnet-endgame/image%2011.png)
 
 This restriction was removed by editing the configuration, allowing PHP files to be uploaded.
 
-![image.png](image%2012.png)
+![image.png](assets/img/posts/tryhackme/vulnnet-endgame/image%2012.png)
 
 A PHP web shell (P0wny Shell) was then uploaded:
 
@@ -255,7 +255,7 @@ After uploading, browsing to:
 
 confirmed successful remote command execution.
 
-![image.png](image%2013.png)
+![image.png](assets/img/posts/tryhackme/vulnnet-endgame/image%2013.png)
 
 ### Initial Foothold
 
@@ -293,7 +293,7 @@ Reviewing the extracted Firefox profiles showed that only the profile:
 
 contained a `logins.json` file, indicating stored credentials.
 
-![image.png](image%2014.png)
+![image.png](assets/img/posts/tryhackme/vulnnet-endgame/image%2014.png)
 
 The tool **firefox_decrypt.py** was used to extract saved passwords:
 
