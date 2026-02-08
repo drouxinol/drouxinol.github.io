@@ -1,4 +1,10 @@
-# TryHackMe - Airplane CTF Walkthrough
+---
+title: "TryHackMe: Airplane CTF Walkthrough"
+categories: [Writeups]
+tags: [Writeups, TryHackMe]
+image:
+  path: assets/img/posts/tryhackme/airplane-ctf/6b9f423bda07437c11975e4db7892bee.svg
+---
 
 ## Port Enumeration
 
@@ -192,7 +198,7 @@ if __name__ == "__main__":
     main()
 ```
 
-![image.png](image.png)
+![image.png](assets/img/posts/tryhackme/airplane-ctf/image.png)
 
 Payload:
 
