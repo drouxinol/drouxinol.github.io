@@ -1,5 +1,5 @@
 ---
-title: "TryHackMe: DX1: Liberty Island"
+title: "TryHackMe: DX1: Liberty Island Walkthrough"
 date: 2026-02-08
 categories: [Writeups]
 tags: [Writeups, TryHackMe]
@@ -7,7 +7,7 @@ image:
   path: assets/img/posts/tryhackme/dx1-liberty-island/logo.png
   alt: DX1: Liberty Island
 ---
-# TryHackMe - DX1: Liberty Island Walkthrough
+
 
 ![image.png](assets/img/posts/tryhackme/dx1-liberty-island/image.png)
 
