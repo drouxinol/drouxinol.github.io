@@ -1,6 +1,12 @@
-# TryHackMe - New York Flankees Walkthrough
+---
+title: "TryHackMe - New York Flankees Walkthrough"
+categories: [Writeups]
+tags: [Writeups, TryHackMe]
+image:
+  path: assets/img/posts/tryhackme/new-york-flankees/618b3fa52f0acc0061fb0172-1719465307426.png
+---
 
-![image.png](image.png)
+![image.png](assets/img/posts/tryhackme/new-york-flankees/image.png)
 
 ## Introduction
 
@@ -48,17 +54,17 @@ PORT     STATE SERVICE REASON         VERSION
 
 Accessing the web service on **port 8080** revealed a blog-style web application. The landing page appeared minimal but included navigation elements and references to administrative functionality.
 
-![image.png](image%201.png)
+![image.png](assets/img/posts/tryhackme/new-york-flankees/image%201.png)
 
 A tab labeled **“Stefan Test”** redirected to what appeared to be a debug page containing development-related information. This suggested the application may still be under development or improperly configured, which can sometimes expose sensitive functionality or internal details.
 
-![image.png](image%202.png)
+![image.png](assets/img/posts/tryhackme/new-york-flankees/image%202.png)
 
 During this exploration, a TODO note stating *“Implement custom authentication”* was observed. This potentially indicates that the current authentication mechanism may rely on a default implementation or incomplete security controls. 
 
 An **Admin Logon** form was also identified. The presence of this interface suggests restricted administrative functionality exists and represents a likely attack surface for further testing.
 
-![image.png](image%203.png)
+![image.png](assets/img/posts/tryhackme/new-york-flankees/image%203.png)
 
 ### Directory Enumeration
 
@@ -154,7 +160,7 @@ Submitting these credentials through the admin login interface resulted in succe
 
 The admin flag was accessible from this interface.
 
-![image.png](image%204.png)
+![image.png](assets/img/posts/tryhackme/new-york-flankees/image%204.png)
 
 ## Reverse shell
 
