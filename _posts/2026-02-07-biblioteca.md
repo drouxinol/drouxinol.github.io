@@ -1,6 +1,12 @@
-# TryHackMe - Biblioteca Walkthrough
+---
+title: "TryHackMe - Biblioteca Walkthrough"
+categories: [Writeups]
+tags: [Writeups, TryHackMe]
+image:
+  path: assets/img/posts/tryhackme/biblioteca/234e64423ae186a73cc9f905522a0f46.png
+---
 
-![image.png](image.png)
+![image.png](assets/img/posts/tryhackme/biblioteca/image.png)
 
 ## Introduction
 
@@ -28,11 +34,11 @@ PORT     STATE SERVICE  REASON
 
 Navigating to `http://10.66.167.156:8000`, we are presented with a **login page**. 
 
-![image.png](image%201.png)
+![image.png](assets/img/posts/tryhackme/biblioteca/image%201.png)
 
 There is also a **registration page**, allowing new users to be created.
 
-![image.png](image%202.png)
+![image.png](assets/img/posts/tryhackme/biblioteca/image%202.png)
 
 Given the challenge hint and the presence of a login form, I decided to test for **SQL Injection**.
 
@@ -40,7 +46,7 @@ Given the challenge hint and the presence of a login form, I decided to test for
 
 I created a user account and intercepted the login request using Burp Suite. The intercepted request looked like this:
 
-![image.png](image%203.png)
+![image.png](assets/img/posts/tryhackme/biblioteca/image%203.png)
 
 I saved the request into a file called `req.txt` and ran **sqlmap**
 
@@ -50,7 +56,7 @@ sqlmap -r req.txt
 
 The scan revealed that the **`username` parameter is injectable.**
 
-![image.png](image%204.png)
+![image.png](assets/img/posts/tryhackme/biblioteca/image%204.png)
 
 ### Database Enumeration
 
@@ -62,7 +68,7 @@ First, I listed all available databases:
 
 Among the results, a database named **`website`** stood out as relevant to the application.
 
-![image.png](image%205.png)
+![image.png](assets/img/posts/tryhackme/biblioteca/image%205.png)
 
 Next, I enumerated the tables within the `website` database:
 
@@ -72,7 +78,7 @@ sqlmap -r req.txt --tables
 
 The database contained a table named **`users`**, which appeared to store authentication data. I then extracted the table’s column structure:
 
-![image.png](image%206.png)
+![image.png](assets/img/posts/tryhackme/biblioteca/image%206.png)
 
 I then enumerated the column structure of the `users` table:
 
@@ -80,7 +86,7 @@ I then enumerated the column structure of the `users` table:
 sqlmap -r req.txt -D website -T users --columns
 ```
 
-![image.png](image%207.png)
+![image.png](assets/img/posts/tryhackme/biblioteca/image%207.png)
 
 The table contained fields commonly associated with user authentication, such as usernames and passwords.
 
@@ -90,7 +96,7 @@ After identifying the structure, I dumped the contents of the `users` table:
 sqlmap -r req.txt -D website -T users --dump
 ```
 
-![image.png](image%208.png)
+![image.png](assets/img/posts/tryhackme/biblioteca/image%208.png)
 
 The dump revealed three user accounts. Two of these accounts (`hacker` and `admin`) were test accounts that I had created earlier. The remaining account, **`smokey`**, appeared to be a legitimate user.
 
@@ -106,15 +112,15 @@ I attempted to log in to the application using these credentials; however, doing
 
 I attempted to reuse the previously obtained credentials to authenticate via SSH, and the login was successful.
 
-![image.png](image%209.png)
+![image.png](assets/img/posts/tryhackme/biblioteca/image%209.png)
 
 Once SSH access was established, I proceeded to enumerate the system and, during enumeration, I identified the presence of another local user named **`hazel`**.
 
-![image.png](image%2010.png)
+![image.png](assets/img/posts/tryhackme/biblioteca/image%2010.png)
 
 Further inspection of Hazel’s home directory revealed its contents. The directory contained a `user.txt` flag, which was not accessible with the current permissions, as well as a Python script.
 
-![image.png](image%2011.png)
+![image.png](assets/img/posts/tryhackme/biblioteca/image%2011.png)
 
 Reviewing the file permissions showed that the Python script, **`hasher.py`**, is owned by root and can only be executed by root. However, the user **`hazel`** has read permissions on this file. At this point, I attempted to perform lateral movement to the `hazel` account using available information, but these attempts were unsuccessful.
 As an alternative approach, I performed a **targeted SSH brute-force attack** against the `hazel` account:
@@ -125,11 +131,11 @@ hydra -l hazel -P /usr/share/wordlists/rockyou.txt ssh://10.66.167.156 -t 4 -I -
 
 The attack succeeded, revealing that the password for the `hazel` account was simply:
 
-![image.png](image%2012.png)
+![image.png](assets/img/posts/tryhackme/biblioteca/image%2012.png)
 
 Using these credentials, I established an SSH session as the `hazel` user and successfully retrieved the `user.txt` flag.
 
-![image.png](image%2013.png)
+![image.png](assets/img/posts/tryhackme/biblioteca/image%2013.png)
 
 ## PrivEsc
 
