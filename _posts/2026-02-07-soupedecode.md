@@ -6,7 +6,7 @@ image:
   path: assets/img/posts/tryhackme/soupedecode-01/618b3fa52f0acc0061fb0172-1753465052754.png
 ---
 
-![image.png](image.png)
+![image.png](assets/img/posts/tryhackme/soupedecode-01/image.png)
 
 ## Introduction
 
