@@ -175,8 +175,8 @@ sudo PYTHONPATH=/tmp /usr/bin/python3 /home/hazel/hasher.py
 
 As a result, Python loaded the malicious `hashlib.py` module instead of the legitimate one, causing the payload to execute with root privileges. This successfully spawned a root shell.
 
-![image.png](image%2014.png)
+![image.png](assets/img/posts/tryhackme/biblioteca/image%2014.png)
 
 With root access obtained, I retrieved the `root.txt` flag, completing the privilege escalation.
 
-![image.png](image%2015.png)
+![image.png](assets/img/posts/tryhackme/biblioteca/image%2015.png)
