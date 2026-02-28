@@ -108,7 +108,7 @@ connect to [192.168.211.0] from (UNKNOWN) [10.81.154.53] 51682
 
 After upgrading the shell to a proper TTY using Python’s `pty` module, the session became fully interactive:
 
-```bash
+```
 daemon@4a70924bafa0:/bin$
 ```
 
